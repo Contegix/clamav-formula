@@ -40,25 +40,93 @@ that differ from whats in defaults.yaml
         'Debian': {
           'clamd': {
             'pkgs': [ 'clamav', 'clamav-daemon'],
-            'service_name': 'clamav-daemon'
           },
           'freshclam': {
             'pkgs': ['clamav-freshclam'],
-            'service_name': 'clamav-freshclam'
            },
         },
-        'Suse': {},
+        'Suse': {
+          'clamd': {
+            'pkgs': [ 'clamav' ],
+            'service_name': 'clamd.service',
+            'config_path': '/etc',
+            'config_file': 'clamd.conf',
+          },
+          'freshclam': {
+            'pkgs': [ 'clamav' ],
+            'service_name': 'freshclam.service',
+            'config_path': '/etc',
+          },
+        },
         'Arch': {
           'clamd': {
             'pkgs': [ 'clamav' ],
-            'service_name': 'clamd',
           },
           'freshclam': {
-            'pkgs': ['clamav'],
-            'service_name': 'freshclamd',
+            'pkgs': [ 'clamav' ],
           },
         },
-        'RedHat': {},
+        'RedHat': {
+          'clamd': {
+            'pkgs': [ 'clamav', 'clamav-scanner-systemd' ],
+            'user': 'clamscan',
+            'group': 'clamscan',
+            'config_path': '/etc/clamd.d',
+            'config_file': 'scan.conf',
+            'service_name': 'clamd@scan',
+            'config': {
+              'LogSyslog': 'yes',
+              'PidFile': '/run/clamd.scan/clamd.pid',
+              'LocalSocket': '/run/clamd.scan/clamd.sock',
+              'LocalSocketGroup': 'clamscan',
+              'User': 'clamscan',
+             },
+          },
+          'freshclam': {
+            'pkgs': [ 'clamav-update' ],
+            'config_path': '/etc',
+            'service_name': 'freshclam.service',
+            'config': {
+              'UpdateLogFile': '/var/log/freshclam.log',
+              'NotifyClamd': '/etc/clamd.d/scan.conf',
+            },
+          },
+        },
+      'FreeBSD': {
+          'clamd': {
+            'pkgs': [ 'clamav' ],
+            'service_name': 'clamav-clamd',
+            'config_path': '/usr/local/etc',
+            'config_file': 'clamd.conf',
+            'config_file_group': 'wheel',
+            'config': {
+              'LogFile': '/var/log/clamav/clamd.log',
+              'PidFile': '/var/run/clamav/clamd.pid',
+              'DatabaseDirectory': '/var/db/clamav',
+              'DatabaseDirectory': '/var/tmp',
+              'FixStaleSocket': 'yes',
+              'LocalSocket': '/var/run/clamav/clamd.sock',
+              'User': 'clamav',
+              'ScanMail': 'yes',
+            },
+          },
+          'freshclam': {
+            'pkgs': [ 'clamav' ],
+            'service_name': 'clamav-freshclam',
+            'config_path': '/usr/local/etc',
+            'config_file': 'freshclam.conf',
+            'config_file_group': 'wheel',
+            'config': {
+              'NotifyClamd': '/usr/local/etc/clamd.conf',
+              'UpdateLogFile': '/var/log/clamav/freshclam.log',
+              'PidFile': '/var/run/clamav/freshclam.pid',
+              'DatabaseDirectory': '/var/db/clamav',
+              'DatabaseOwner': 'clamav',
+              'DatabaseMirror': 'database.clamav.net',
+            },
+          },
+        },
+
   }
   , grain="os_family"
   , merge=salt['pillar.get']('clamav:lookup'))
