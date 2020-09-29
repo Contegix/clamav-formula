@@ -11,8 +11,8 @@ clamd_pkg:
       - {{ pkg }}
 {%- endfor %}
 
-
-{% salt['pillar.get']('clamd.config.User', 'clamav') %}:
+{% set user = salt['pillar.get']('clamd.config.User', 'clamav') %}
+{{ user }}:
   user.present:
   - system: True
   - shell: /sbin/nologin
