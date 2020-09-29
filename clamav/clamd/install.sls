@@ -23,4 +23,5 @@ clamd_pkg:
   file.managed:
     - user: {{ user }}
     - group: {{ user }}
+    - mode: 0666
     - makedirs: True

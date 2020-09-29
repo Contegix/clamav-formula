@@ -15,3 +15,4 @@ freshclam_pkg:
 {{ logpath }}:
   file.managed:
     - makedirs: True
+    - mode: 0666
