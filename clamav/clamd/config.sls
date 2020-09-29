@@ -12,6 +12,7 @@ clamd_config:
     - name: {{ clamd.config_path}}/{{ clamd.config_file }}
     - source: salt://clamav/files/clamd.conf
     - template: jinja
+    - makedirs: True
     - mode: 644
     - user: {{ clamd.config_file_owner }}
     - group: {{ clamd.config_file_group }}
