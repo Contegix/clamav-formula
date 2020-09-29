@@ -17,3 +17,11 @@ clamd_pkg:
   - system: True
   - shell: /sbin/nologin
   - createhome: False
+
+{% set logpath = salt['pillar.get']('clamd.config.LogFile') %}
+{{ logpath }}:
+  file.managed:
+    - user: {{ user }}
+    - group: {{ user }}
+    - makedirs: False
+
