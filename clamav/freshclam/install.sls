@@ -10,3 +10,8 @@ freshclam_pkg:
 {%- for pkg in freshclam.pkgs %}
       - {{ pkg }}
 {%- endfor %}
+
+{% set logpath = salt['pillar.get']('clamav.freshclam.config.UpdateLogFile', '/var/log/clamav/freshclam.log') %}
+{{ logpath }}:
+  file.managed:
+    - makedirs: True

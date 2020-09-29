@@ -11,14 +11,14 @@ clamd_pkg:
       - {{ pkg }}
 {%- endfor %}
 
-{% set user = salt['pillar.get']('clamd.config.User', 'clamav') %}
+{% set user = salt['pillar.get']('clamav.clamd.config.User', 'clamav') %}
 {{ user }}:
   user.present:
    - system: True
    - shell: /sbin/nologin
    - createhome: False
 
-{% set logpath = salt['pillar.get']('clamd.config.LogFile', '/var/log/clamav/clamd.log') %}
+{% set logpath = salt['pillar.get']('clamav.clamd.config.LogFile', '/var/log/clamav/clamd.log') %}
 {{ logpath }}:
   file.managed:
     - user: {{ user }}
