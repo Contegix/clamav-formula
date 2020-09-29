@@ -26,6 +26,13 @@ clamd_pkg:
     - group: {{ user }}
     - dir_mode: 755
 
+# location for clamd pid file
+/run/clamav:
+  file.directory:
+    - user: {{ user }}
+    - group: {{ user }}
+    - dir_mode: 755
+
 # location for clamd log file
 {% set logpath = salt['pillar.get']('clamav.clamd.config.LogFile', '/var/log/clamav/clamd.log') %}
 {{ logpath }}:
