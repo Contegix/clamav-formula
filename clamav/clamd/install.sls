@@ -22,8 +22,8 @@ clamd_pkg:
 # location for clamd socket file
 /var/lib/clamav:
   file.directory:
-    - user: {{ user }}
-    - group: {{ user }}
+    - user: 'clamupdate'
+    - group: 'clamupdate'
     - dir_mode: 755
 
 # location for clamd pid file
